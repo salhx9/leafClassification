@@ -15,6 +15,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.cross_validation import StratifiedShuffleSplit
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import ExtraTreesClassifier
+from sklearn.linear_model import LogisticRegression
 
 def warn(*args, **kwargs): pass
 import warnings
@@ -49,7 +50,7 @@ classifiers = [
     DecisionTreeClassifier(),
     ExtraTreesClassifier(),
     RandomForestClassifier(),
-    LinearDiscriminantAnalysis()]
+    LogisticRegression()]
 
 # Logging for Visual Comparison
 log_cols=["Classifier", "Accuracy", "Log Loss"]
@@ -105,7 +106,7 @@ submission1.tail()
 
 
 #linear discriminant analysis
-favorite_clf2 = LinearDiscriminantAnalysis()
+favorite_clf2 = LogisticRegression()
 favorite_clf2.fit(X_train, y_train)
 test_predictions2 = favorite_clf2.predict_proba(test)
 # Format DataFrame
@@ -113,7 +114,7 @@ submission2 = pd.DataFrame(test_predictions2, columns=classes)
 submission2.insert(0, 'id', test_ids)
 submission2.reset_index()
 # Export Submission
-submission2.to_csv('submissionLDA.csv', index = False)
+submission2.to_csv('submissionLR.csv', index = False)
 submission2.tail()
 
 # kNN
