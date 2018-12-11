@@ -5,18 +5,16 @@ import matplotlib.pyplot as plt
 
 from sklearn.metrics import accuracy_score, log_loss
 from sklearn.neighbors import KNeighborsClassifier
-#from sklearn.svm import SVC, LinearSVC, NuSVC
 from sklearn.tree import DecisionTreeClassifier
-#from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.cluster import DBSCAN
 from sklearn.cluster import KMeans
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-#from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 
 from sklearn.preprocessing import LabelEncoder
 from sklearn.cross_validation import StratifiedShuffleSplit
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import ExtraTreesClassifier
 
 def warn(*args, **kwargs): pass
 import warnings
@@ -49,16 +47,9 @@ for train_index, test_index in sss:
 classifiers = [
     KNeighborsClassifier(3),
     DecisionTreeClassifier(),
+    ExtraTreesClassifier(),
     RandomForestClassifier(),
-    GaussianNB(),
     LinearDiscriminantAnalysis()]
-    #QuadraticDiscriminantAnalysis()]
-    #AdaBoostClassifier(),
-    #GradientBoostingClassifier(),
-    #DBSCAN(),
-    #KMeans(4),
-    #SVC(kernel="rbf", C=0.025, probability=True),
-    #NuSVC(probability=True),
 
 # Logging for Visual Comparison
 log_cols=["Classifier", "Accuracy", "Log Loss"]
@@ -87,19 +78,68 @@ for clf in classifiers:
 print("="*30)
 
 # need to fine tune this for our dataset 
-# Predict Test Set
-#favorite_clf = LinearDiscriminantAnalysis()
-favorite_clf = RandomForestClassifier(n_estimators=900)
-favorite_clf.fit(X_train, y_train)
-test_predictions = favorite_clf.predict_proba(test)
 
+# randomforest classifier
+favorite_clf0 = RandomForestClassifier()
+favorite_clf0.fit(X_train, y_train)
+test_predictions0 = favorite_clf0.predict_proba(test)
 # Format DataFrame
-submission = pd.DataFrame(test_predictions, columns=classes)
-submission.insert(0, 'id', test_ids)
-submission.reset_index()
-
+submission0 = pd.DataFrame(test_predictions0, columns=classes)
+submission0.insert(0, 'id', test_ids)
+submission0.reset_index()
 # Export Submission
-submission.to_csv('submission.csv', index = False)
-submission.tail()
+submission0.to_csv('submissionRFC.csv', index = False)
+submission0.tail()
+
+#extra trees classifier
+favorite_clf1 = ExtraTreesClassifier()
+favorite_clf1.fit(X_train, y_train)
+test_predictions1 = favorite_clf1.predict_proba(test)
+# Format DataFrame
+submission1 = pd.DataFrame(test_predictions1, columns=classes)
+submission1.insert(0, 'id', test_ids)
+submission1.reset_index()
+# Export Submission
+submission1.to_csv('submissionETC.csv', index = False)
+submission1.tail()
+
+
+#linear discriminant analysis
+favorite_clf2 = LinearDiscriminantAnalysis()
+favorite_clf2.fit(X_train, y_train)
+test_predictions2 = favorite_clf2.predict_proba(test)
+# Format DataFrame
+submission2 = pd.DataFrame(test_predictions2, columns=classes)
+submission2.insert(0, 'id', test_ids)
+submission2.reset_index()
+# Export Submission
+submission2.to_csv('submissionLDA.csv', index = False)
+submission2.tail()
+
+# kNN
+favorite_clf3 = KNeighborsClassifier(3)
+favorite_clf3.fit(X_train, y_train)
+test_predictions3= favorite_clf3.predict_proba(test)
+# Format DataFrame
+submission3 = pd.DataFrame(test_predictions3, columns=classes)
+submission3.insert(0, 'id', test_ids)
+submission3.reset_index()
+# Export Submission
+submission3.to_csv('submissionKNN.csv', index = False)
+submission3.tail()
+
+#decision tree classifier
+favorite_clf4 = DecisionTreeClassifier()
+favorite_clf4.fit(X_train, y_train)
+test_predictions4= favorite_clf4.predict_proba(test)
+# Format DataFrame
+submission4 = pd.DataFrame(test_predictions4, columns=classes)
+submission4.insert(0, 'id', test_ids)
+submission4.reset_index()
+# Export Submission
+submission4.to_csv('submissionDTC.csv', index = False)
+submission4.tail()
+
+
 
 #https://www.datacamp.com/community/tutorials/random-forests-classifier-python
