@@ -88,8 +88,8 @@ print("="*30)
 
 # need to fine tune this for our dataset 
 # Predict Test Set
-favorite_clf = LinearDiscriminantAnalysis()
-#favorite_clf = RandomForestClassifier()
+#favorite_clf = LinearDiscriminantAnalysis()
+favorite_clf = RandomForestClassifier(n_estimators=900)
 favorite_clf.fit(X_train, y_train)
 test_predictions = favorite_clf.predict_proba(test)
 
@@ -101,3 +101,5 @@ submission.reset_index()
 # Export Submission
 submission.to_csv('submission.csv', index = False)
 submission.tail()
+
+#https://www.datacamp.com/community/tutorials/random-forests-classifier-python
