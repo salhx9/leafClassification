@@ -48,6 +48,7 @@ for train_index, test_index in sss:
 classifiers = [
     KNeighborsClassifier(3),
     DecisionTreeClassifier(),
+    GaussianNB(),
     ExtraTreesClassifier(),
     RandomForestClassifier(),
     LogisticRegression()]
@@ -140,6 +141,19 @@ submission4.reset_index()
 # Export Submission
 submission4.to_csv('submissionDTC.csv', index = False)
 submission4.tail()
+
+
+#gaussiannb
+favorite_clf5 = GaussianNB()
+favorite_clf5.fit(X_train, y_train)
+test_predictions5= favorite_clf4.predict_proba(test)
+# Format DataFrame
+submission5 = pd.DataFrame(test_predictions5, columns=classes)
+submission5.insert(0, 'id', test_ids)
+submission5.reset_index()
+# Export Submission
+submission5.to_csv('submissionGNB.csv', index = False)
+submission5.tail()
 
 
 
